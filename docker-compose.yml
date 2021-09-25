@@ -1,11 +1,23 @@
 version: "3"
+
+networks:
+    nord-test:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.221.0/28
+
 services:
     php:
         build: docker/php
         volumes:
             - .:/app:cached
+            - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
         working_dir: /app
         container_name: securestorage_php
+        networks:
+            - nord-test
 
     nginx:
         image: nginx:1.15.0
@@ -15,6 +27,8 @@ services:
             - .:/app:cached
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
         container_name: securestorage_nginx
+        networks:
+            - nord-test
 
     mysql:
         image: mysql:5.7
@@ -26,3 +40,5 @@ services:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DB_NAME: ${MYSQL_DB_NAME}
         container_name: securestorage_mysql
+        networks:
+            - nord-test
