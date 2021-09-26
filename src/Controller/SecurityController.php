@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Prototypes\BasicController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SecurityController extends AbstractController
+class SecurityController extends BasicController
 {
     /**
      * @Route("/login", name="login", methods={"POST"})
